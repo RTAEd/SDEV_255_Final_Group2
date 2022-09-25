@@ -5,12 +5,12 @@ SDEV_255_Final_Group2 - Initialized repo for Group 2 project.
 
 Update:
 What I worked on:
--login to app
--adding new app user
--retrieving websites information from database
--restrieving username/password from database
--adding new website/username/password to database
--updating password in database
+[login to app]
+[adding new app user]
+[retrieving websites information from database]
+[restrieving username/password from database]
+[adding new website/username/password to database]
+[updating password in database]
 
 For testing purposes (how to log into the app):
 
