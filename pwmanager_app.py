@@ -269,7 +269,7 @@ def newUser():
 
 #The beginning of the program
 def start(choice):
-  print(f"Welcome to Group 4 Password Manager!\n".center(100))
+  print(f"Welcome to Group 2 Password Manager!\n".center(100))
   print("------------------------------------------------------------\n".center(100))
   #Give the user options
   choice = validate(choice, False)
