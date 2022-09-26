@@ -56,30 +56,42 @@ class Password():
 
 
         # Takes the output of the previous function as an argument and creates the password
-    @classmethod  
-    def passGen(self,passSpecs):
+
+
+#Define object for Password class
+characters = Password()
+
+
+#Edit: Move passGen outside class to reduce errors
+#should pass the dictionary to the function will generate a password
+def passGen(passSpecs):
             import random
-            self.password_elements = []
+            characters.password_elements = []
+            print("")
+       
             
             # Fulfill the user required characters first 
             for i in range (passSpecs['lower']):
-                self.password_elements.append(random.choice(self.lower_case_lellers_list))
+                characters.password_elements.append(random.choice(characters.lower_case_lellers_list))
             for i in range (passSpecs['upper']):
-                self.password_elements.append(random.choice(self.upper_case_letter_list))
+                characters.password_elements.append(random.choice(characters.upper_case_letter_list))
             for i in range (passSpecs['numbers']):
-                self.password_elements.append(random.choice(self.numbers_list))
+                characters.password_elements.append(random.choice(characters.numbers_list))
             for i in range (passSpecs['symbols']):
-                self.password_elements.append(random.choice(self.symbols_list))
+                characters.password_elements.append(random.choice(characters.symbols_list))
 
             # Full list of characters to fill in based on the user requirements if not over max
-            while len(self.password_elements) < (passSpecs['length']):
-                    self.password_elements.append(random.choice(self.remaining_chars))          
+            while len(characters.password_elements) < (passSpecs['length']):
+                    characters.password_elements.append(random.choice(characters.remaining_chars))          
                 
-            random.shuffle(self.password_elements)
-            password = "".join(self.password_elements)
-
+            random.shuffle(characters.password_elements)
+            password = "".join(characters.password_elements)
+            
+  
             return password
     
 
-# KEEP(
-print(Password.passGen(Password.generate_user_input()))
+
+
+#Since passGen was removed from class, we'll call the normal function
+print(passGen(Password.generate_user_input()))
