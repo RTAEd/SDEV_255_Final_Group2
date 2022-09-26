@@ -99,12 +99,4 @@ def passGen(passSpecs):
     
 
 # Generate the password
-print(passGen(Password.generate_user_input()))
-
-
-# KEEP
-print(passGen(generate_user_input()))
-
-#TODO: Convert the password generatot to a class
-#TODO: Update the generator to be able to to eliminate and element (will need to update the remainin_chars list correctly to match.)
-#TODO: Eliminate negative numbers
+print(f'New password: {passGen(Password.generate_user_input())}')
