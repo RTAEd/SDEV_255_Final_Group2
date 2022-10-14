@@ -153,6 +153,7 @@ bg_color = "#002435"
 
 #The login screen
 def load_frame1():
+    clearscreen(frame1)
     clearscreen(frame2)
     frame1.tkraise()
     frame1.pack_propagate(False)
@@ -177,8 +178,8 @@ def load_frame1():
     password_input.pack()
     password_input.bind("<Return>", (lambda event: fetch_db(username_input.get(), password_input.get())))
 
-    #button (need to add frame0)
-    tk.Button(frame1, text="New User", font = ("undefeated", 10), bg="#28393a", fg="white", cursor = "hand2", activebackground = "#badee2", activeforeground = "black", command = lambda:fetch_db("dtran", "manaGer%360!")).pack(pady=20)
+    #button to add a new user
+    tk.Button(frame1, text="New User", font = ("undefeated", 10), bg="#28393a", fg="white", cursor = "hand2", activebackground = "#badee2", activeforeground = "black", command = lambda:newUser()).pack(pady=20)
 
 #Welcome Screen - give options to user to wither view or add login information
 def load_frame2():
@@ -192,11 +193,11 @@ def load_frame2():
     tk.Label(frame2, text = f"Welcome back, {my_account.account_name}!", bg = bg_color, fg = "white", font=("TkMenuFont", 14) ).pack()
     tk.Label(frame2, text = "Please choose an option:\n", bg = bg_color, fg = "white", font=("TkMenuFont", 10) ).pack()
     tk.Button(frame2, text="View Login Information", font = ("TkHeadingFont", 10), bg="#28393a", fg="white", cursor = "hand2", activebackground = "#badee2", activeforeground = "black", command = lambda:load_frame3()).pack(pady=2, fill = "both")
-    tk.Button(frame2, text="Add Login Information", font = ("TkHeadingFont", 10), bg="#28393a", fg="white", cursor = "hand2", activebackground = "#badee2", activeforeground = "black", command = lambda:load_frame1()).pack(pady=2, fill = "both")
+    tk.Button(frame2, text="Add Login Information", font = ("TkHeadingFont", 10), bg="#28393a", fg="white", cursor = "hand2", activebackground = "#badee2", activeforeground = "black", command = lambda:addInfo()).pack(pady=2, fill = "both")
     tk.Button(frame2, text="Logout", font = ("undefeated", 10), bg="#28393a", fg="white", cursor = "hand2", activebackground = "#badee2", activeforeground = "black", command = lambda:load_frame1()).pack(pady=50)
 
 
-#Vwebsites screen
+#View websites screen
 def load_frame3():
     clearscreen(frame2)
     frame2.tkraise()
@@ -206,9 +207,9 @@ def load_frame3():
     logo_widget.pack()
     tk.Label(frame2, text = "My Websites", bg = bg_color, fg = "white", font=("TkMenuFont", 14) ).pack()
     tk.Label(frame2, text = "Choose a website to view:\n", bg = bg_color, fg = "white", font=("TkMenuFont", 10) ).pack()
+    #shows the list of websites as buttons
     list()
-    #for i in websites:
-        #tk.Button(frame2, text=i, font = ("TkHeadingFont", 10), bg="#28393a", fg="white", cursor = "hand2", activebackground = "#badee2", activeforeground = "black", command = lambda:load_frame1()).pack(pady=2, fill = "both")
+    #return to the previous screen
     tk.Button(frame2, text="Return", font = ("undefeated", 10), bg="#28393a", fg="white", cursor = "hand2", activebackground = "#badee2", activeforeground = "black", command = lambda:load_frame2()).pack(pady=50)
 
 #List all websites associated with the user    
@@ -217,10 +218,9 @@ def list():
     cursor.execute(f"SELECT * FROM website WHERE account_id = {my_account.account_id}")
     ans = cursor.fetchall()
     for i in ans:
-        tk.Button(frame2, text=f"{i[2]}", font = ("TkHeadingFont", 10), bg="#28393a", fg="white", cursor = "hand2", activebackground = "#badee2", activeforeground = "black", command = lambda:viewInfo(i[0],i[1])).pack(pady=2, fill = "both")
-        #count+=1
+        tk.Button(frame2, text=f"{i[2]}", font = ("TkHeadingFont", 10), bg="#28393a", fg="white", cursor = "hand2", activebackground = "#badee2", activeforeground = "black", command = lambda i=i:viewInfo(i[0],i[1])).pack(pady=2, fill = "both")
     row = len(ans)
-    #For newly created user, there are no website. So it will return to the welcome menu
+    #For newly created user, there are no website. The app will let the user know.
     if row == 0:
         tk.Label(frame2, text = f"NOTICE: {my_account.account_name} has not added any new accounts.", bg = bg_color, fg = "white", font=("TkMenuFont", 14) ).pack()
    
@@ -235,6 +235,8 @@ def viewInfo(web_id, site_name):
     logo_widget.pack()
     info.web_id = web_id
     info.site_name = site_name
+   
+    #grab the account information for the chosen website
     cursor.execute(f"SELECT * FROM login WHERE web_id = {info.web_id}")
     ans = cursor.fetchall()
     for i in ans:
@@ -242,9 +244,12 @@ def viewInfo(web_id, site_name):
       info.email = i[1]
       info.username = i[2]
       info.pw = i[3]
+    #display information
     tk.Label(frame2, text = f"Login Information - {info.site_name}", bg = bg_color, fg = "white", font=("TkMenuFont", 14) ).pack()
     tk.Label(frame2, text = f"\n[USERNAME: {info.username}]\n[PASSWORD: {info.pw}] \n[Associated Email: {info.email}]\n", bg = "black", fg = "white", font=("TkMenuFont", 12) ).pack(pady =5, fill = "both")
+    #Option to update password
     tk.Button(frame2, text="Update Password", font = ("undefeated", 10), bg="#28393a", fg="white", cursor = "hand2", activebackground = "#badee2", activeforeground = "black", command = lambda:updatePassword()).pack(pady=20)
+    #Option to return to the website list screen
     tk.Button(frame2, text="Return", font = ("undefeated", 10), bg="#28393a", fg="white", cursor = "hand2", activebackground = "#badee2", activeforeground = "black", command = lambda:load_frame3()).pack()
 
 #The password update screen
@@ -258,9 +263,9 @@ def updatePassword():
     logo_widget.pack()
     tk.Label(frame2,text=f"Enter or Generate a new Password", bg = bg_color, fg = "white", font=("TkMenuFont", 14) ).pack()
     tk.Label(frame2,text=f"Press the 'Enter' key to confirm the change", bg = bg_color, fg = "white", font=("TkMenuFont", 10) ).pack()
+
     username = tk.Label(frame2,text=f"\nOld Password: {info.pw}", bg = bg_color, fg = "white", font=("TkMenuFont", 14) ).pack()
-    
-    # password: label
+    #User will input their new password here
     password = tk.Label(frame2,text="New Password: ", bg = bg_color, fg = "white", font=("TkMenuFont", 14) ).pack()
     
     # password_input box
@@ -271,24 +276,144 @@ def updatePassword():
 
     #button to generate new password
     tk.Button(frame2, text="Generate", font = ("Parisienne Small", 30), bg="#28393a", fg="white", cursor = "hand2", activebackground = "#badee2", activeforeground = "black", command = lambda:viewInfo(info.web_id, info.site_name)).pack(pady=20)
-    
+    #button to cancel the update
     tk.Button(frame2, text="Cancel Change", font = ("undefeated", 10), bg="#28393a", fg="white", cursor = "hand2", activebackground = "#badee2", activeforeground = "black", command = lambda:viewInfo(info.web_id, info.site_name)).pack(pady=2)
 
-#Someone do this function: checks the inputs if it's not 
+#check for empty entries and updates the passwords
 def change(new_password):
     if new_password == "":
         messagebox.showinfo(title="Listen Up", message="no empty fields allowed")
+    else:
+        cursor.execute(f'''UPDATE login SET password = "{new_password}" WHERE log_id = "{info.log_id}";''')
+        connection.commit()
+        viewInfo(info.web_id, info.site_name)
+
+#The Screen to add more website/account information
+def addInfo():
+    clearscreen(frame2)
+    frame2.tkraise()
+    frame2.pack_propagate(False)
+ 
+    logo_img = ImageTk.PhotoImage(file = "assets/sks_logo.png")
+    logo_widget = tk.Label(frame2, image = logo_img, bg = "#002435")
+    logo_widget.image = logo_img
+    logo_widget.pack()
+
+    #make a new log_id for the new entry
+    cursor.execute("SELECT max(log_id) FROM login ")
+    ans = cursor.fetchall()
+    for i in ans:
+        info.log_id = int(i[0]) +1
+    cursor.execute("SELECT max(web_id) FROM website ")
+    ans = cursor.fetchall()
+    for i in ans:
+        info.web_id = int(i[0]) +1
+
+    tk.Label(frame2,text="Adding a New Account", bg = bg_color, fg = "white", font=("TkMenuFont", 14) ).pack()
+    tk.Label(frame2,text="Please enter the following information:\n", bg = bg_color, fg = "white", font=("TkMenuFont", 10) ).pack()
+
+    # username_input box
+    tk.Label(frame2,text="Website Name", bg = bg_color, fg = "white", font=("TkMenuFont", 14) ).pack()
+    websitename = tk.Entry(frame2,width=50)
+    websitename.pack()
+    websitename.focus()
+    websitename.bind("<Return>", lambda funct1: url.focus())
+
+    tk.Label(frame2,text="Website URL", bg = bg_color, fg = "white", font=("TkMenuFont", 14) ).pack()
+    url = tk.Entry(frame2,width=50)
+    url.pack()
+    url.bind("<Return>", lambda funct1: email.focus())
+
+    tk.Label(frame2,text="My Associated Email Address", bg = bg_color, fg = "white", font=("TkMenuFont", 14) ).pack()
+    email = tk.Entry(frame2,width=50)
+    email.pack()
+    email.bind("<Return>", lambda funct1: username.focus())
+
+    tk.Label(frame2,text="My Username", bg = bg_color, fg = "white", font=("TkMenuFont", 14) ).pack()
+    username = tk.Entry(frame2,width=50)
+    username.pack()
+    username.bind("<Return>", lambda funct1: password.focus())
+
+    tk.Label(frame2,text="My Password", bg = bg_color, fg = "white", font=("TkMenuFont", 14) ).pack()
+    password = tk.Entry(frame2,width=50)
+    password.pack()
+    password.bind("<Return>", (lambda event: add(info.log_id,info.web_id,websitename.get(),url.get(),email.get(),username.get(),password.get())))
+
+    #button to go back
+    tk.Button(frame2, text="Cancel", font = ("undefeated", 10), bg="#28393a", fg="white", cursor = "hand2", activebackground = "#badee2", activeforeground = "black", command = lambda:load_frame2()).pack(pady=20)
+
+
+#Checks for empty inputs and updates the new website and its login informations
+def add(log_id,web_id,site,url,email,username,password):
+    if site == "" or url == "" or email == "" or username == "" or password == "":
+        messagebox.showinfo(title="Listen Up", message="no empty fields allowed")
 
     else:
-
-        print(info.log_id)
-        cursor.execute(f'''UPDATE login SET password = "{new_password}" WHERE log_id = "{info.log_id}";''')
+        #insert the additional information to our database
+        cursor.execute(f'INSERT INTO website(web_id, site_name, url, account_id) VALUES ({web_id}, "{site}", "{url}",{my_account.account_id})')
+        #commit changes
+        connection.commit()
+        cursor.execute(f'INSERT INTO login(log_id, email, username, password, web_id) VALUES ({log_id}, "{email}", "{username}", "{password}", {web_id})')
         connection.commit()
         load_frame2()
 
+#New User Screen
+def newUser():
+    clearscreen(frame2)
+    frame2.tkraise()
+    frame2.pack_propagate(False)
+ 
+    logo_img = ImageTk.PhotoImage(file = "assets/sks_logo.png")
+    logo_widget = tk.Label(frame2, image = logo_img, bg = "#002435")
+    logo_widget.image = logo_img
+    logo_widget.pack()
 
+    #make a new account_id for the new user
+    cursor.execute("SELECT max(account_id) FROM app ")
+    ans = cursor.fetchall()
+    for i in ans:
+        my_account.account_id = int(i[0]) +1
 
+    tk.Label(frame2,text="Adding a New SKS User", bg = bg_color, fg = "white", font=("TkMenuFont", 14) ).pack()
+    tk.Label(frame2,text="Create your SKS account:\n", bg = bg_color, fg = "white", font=("TkMenuFont", 10) ).pack()
+ 
+    tk.Label(frame2,text="Fullname", bg = bg_color, fg = "white", font=("TkMenuFont", 14) ).pack()
+    name = tk.Entry(frame2,width=50)
+    name.pack()
+    name.focus()
+    name.bind("<Return>", lambda funct1: username.focus())
 
+    # username_input box
+    tk.Label(frame2,text="Username", bg = bg_color, fg = "white", font=("TkMenuFont", 14) ).pack()
+    username = tk.Entry(frame2,width=50)
+    username.pack()
+    username.bind("<Return>", lambda funct1: password.focus())
+
+    tk.Label(frame2,text="Password", bg = bg_color, fg = "white", font=("TkMenuFont", 14) ).pack()
+    password = tk.Entry(frame2,width=50)
+    password.pack()
+    password.bind("<Return>", lambda funct1: confirm.focus())
+
+    tk.Label(frame2,text="Re-enter your Password to Confirm", bg = bg_color, fg = "white", font=("TkMenuFont", 14) ).pack()
+    confirm = tk.Entry(frame2,width=50)
+    confirm.pack()
+    confirm.bind("<Return>", (lambda event: add_User(my_account.account_id,name.get(),username.get(),password.get(),confirm.get())))
+
+    #button to cancel
+    tk.Button(frame2, text="Cancel", font = ("undefeated", 10), bg="#28393a", fg="white", cursor = "hand2", activebackground = "#badee2", activeforeground = "black", command = lambda:load_frame1()).pack(pady=20)
+
+#Checks for empty inputs and updates the new website and its login informations
+def add_User(account_id,name,username,password,confirm):
+    if name == "" or username == "" or password == "" or confirm == "":
+        messagebox.showinfo(title="Listen Up", message="no empty fields allowed")
+    elif password != confirm:
+        messagebox.showinfo(title="Listen Up", message="Your password doesn't match!")
+    else:
+        #Add new user to the database
+        cursor.execute(f'INSERT INTO app(account_id, app_user, app_pass, account_name) VALUES ({account_id}, "{username}", "{password}", "{name}")')
+        connection.commit()
+        messagebox.showinfo(title="SKS Account Created", message="Your SKS account was successfully created. Go login!")
+        load_frame1()
 
 frame1 = tk.Frame(root, width=640, height=600, bg="#002435")
 frame2 = tk.Frame(root, bg="#002435")
