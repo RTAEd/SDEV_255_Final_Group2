@@ -10,4 +10,4 @@ You can run the following commands in the Command Prompt (if you have already in
 * pip install Pillow
 * pip install --upgrade --user https://github.com/pyglet/pyglet/archive/master.zip
 
-The SKS_Download directory is where the final product is located. Instructions on how to use the app and the download page is here.
+The SKS_Download directory is where the final product is located. Instructions on how to use the app and the download page is there.
