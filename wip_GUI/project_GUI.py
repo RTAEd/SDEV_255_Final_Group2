@@ -2,14 +2,13 @@ import tkinter as tk
 from PIL import ImageTk, Image, ImageSequence
 import sqlite3
 import time
-from tkinter import messagebox
+from tkinter import END, messagebox
 import pyglet
 import random
 
 #add fonts
 pyglet.font.add_file("fonts/undefeated.ttf")
 pyglet.font.add_file("fonts/Parisienne-Small.ttf")
-pyglet.font.add_file("fonts/KRV.ttf")
 
 #Once I figure things out, I will move stuff around
 connection = sqlite3.connect("data/pw_manager.db")
@@ -48,7 +47,8 @@ info = manager()
 choice = 1
 #record max number of login attempt to access the app
 my_account.attempt = 3
-'''''
+
+#password generator function
 def generate_password():
 
     letters = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z']
@@ -67,31 +67,9 @@ def generate_password():
 
     random.shuffle(password_list)
     password = "".join(password_list)
+    return str(password)
 
 
-    password_input.delete(0,END)
-    password_input.insert(0,str(password))
-'''
-#ANyone want to work on the password gen?
-""" 
-def add():
-    keys = ["username", "password"]
-
-    if password_input.get() == "":
-        messagebox.showinfo(title="Listen Up", message="no empty fields allowed")
-
-    else:
-
-        value_entry = [username_input.get(), password_input.get()]
-        entry_dict = {key: value for (key, value) in zip(keys, value_entry)}
-
-        if messagebox.askyesno(title="please Confirm", message=f"{entry_dict}\n it this okay?"):
-            username_input.delete(0, END)
-            password_input.delete(0, END)
-
-            with open("data.txt", "a") as data_file:
-                data_file.write(f"{str(entry_dict)},\n")
-"""
 
 
 #clear screen
@@ -275,7 +253,7 @@ def updatePassword():
     password_input.bind("<Return>", (lambda event: change(password_input.get())))
 
     #button to generate new password
-    tk.Button(frame2, text="Generate", font = ("Parisienne Small", 30), bg="#28393a", fg="white", cursor = "hand2", activebackground = "#badee2", activeforeground = "black", command = lambda:viewInfo(info.web_id, info.site_name)).pack(pady=20)
+    tk.Button(frame2, text="Generate", font = ("Parisienne Small", 30), bg="#28393a", fg="white", cursor = "hand2", activebackground = "#badee2", activeforeground = "black", command = lambda:[password_input.delete(0, END),password_input.insert(0, generate_password())]).pack(pady=20)
     #button to cancel the update
     tk.Button(frame2, text="Cancel Change", font = ("undefeated", 10), bg="#28393a", fg="white", cursor = "hand2", activebackground = "#badee2", activeforeground = "black", command = lambda:viewInfo(info.web_id, info.site_name)).pack(pady=2)
 
