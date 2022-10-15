@@ -2,6 +2,173 @@ import sqlite3
 import os
 import time
 
+class Password():
+
+    def __init__(self): 
+    # List of lower-case elements for password
+        self.lower_case_letters_list = [
+            'a','b','c','d','e','f',
+            'g','h','i','j','k','l',
+            'm','n','o','p','q','r',
+            's','t','u','v','w','x',
+            'y','z']
+        # List of upper-case elements for password
+        self.upper_case_letters_list = [
+            'A','B','C','D','E','F',
+            'G','H','I','J','K','L',
+            'M','N','O','P','Q','R',
+            'S','T','U','V','W','X',
+            'Y','Z']
+        # List of number elements for password
+        self.numbers_list = ['0','1','2','3','4','5','6','7','8','9']
+
+        # List of symbol elements for password: Excludes quotes and slashes
+        self.symbols_list = [
+            '~','`','!','@','#','$',
+            '%','^','&','*','(',')',
+            '_','-','+','=','{','}',
+            '[',']','|',':',';','<',
+            '>','.','?']
+        # An empty list to contain elements of the remaining number of characters in the password
+        self.remaining_chars = list()
+
+        # Initiate other class variables
+        self.get_length = 8
+        self.get_lower = 0
+        self.get_upper = 0
+        self.get_nums = 0
+        self.get_symbols = 0
+        self.passSpecs = {}
+        self.password_elements = []
+#Define object for Password class
+characters = Password()        
+
+
+# Request user input for definition of password
+def generate_user_input():
+            print("PASSWORD GENERATOR\n".center(100))
+            print("------------------------------------------------------------\n".center(100))
+            pw_length()
+            print()
+            passSpecs = {'length': characters.get_length, 'lower':characters.get_lower, 'upper':characters.get_upper, 'numbers':characters.get_nums, 'symbols':characters.get_symbols}
+
+            return passSpecs
+
+def pw_length():
+      try:
+            characters.get_length = abs(int(input("Enter the preferred length of your password? (Enter '0' to cancel): ")))
+            if characters.get_length == 0:
+                os.system('clear')
+                return updatePassword()
+            else:
+                return num_lowercase(characters.get_length)
+      except:
+        print("\nInvalid Input Detected. Try Again.\n")  
+        return pw_length()
+        
+def num_lowercase(length):
+      try:
+            characters.get_lower = abs(int(input("Enter the minimum number of lower-case letters. (Enter '0' to skip): ")))
+            assert (length - characters.get_lower) >= 0
+            length = length - characters.get_lower
+            return num_uppercase(length)
+      except:
+        if (length - characters.get_lower) < 0:
+            print("\nThere's not enough password space remaining for this number of lower-case letters!\n")
+        else:
+            print("\nInvalid Input Detected. Try Again.\n")
+        return num_lowercase(length)
+        
+def num_uppercase(length):
+      try:
+            characters.get_upper = abs(int(input("Enter the minimum number of upper-case letters. (Enter '0' to skip): ")))
+            assert (length - characters.get_upper) >= 0
+            length = length - characters.get_upper
+            return num_numbers(length)
+      except:
+        if (length - characters.get_upper) < 0:
+            print("\nThere's not enough password space remaining for this number of upper-case letters!\n")
+        else:
+            print("\nInvalid Input Detected. Try Again.\n")  
+        return num_uppercase(length)
+        
+def num_numbers(length):
+      try:
+            characters.get_nums = abs(int(input("Enter the minimum number of numbers. (Enter '0' to skip): ")))
+            assert (length - characters.get_nums) >= 0
+            length = length - characters.get_nums
+            return num_symbol(length)
+      except:
+        if (length - characters.get_nums) < 0:
+            print("\nThere's not enough password space remaining for this number of numbers!\n")
+        else:
+            print("\nInvalid Input Detected. Try Again.\n")  
+        return num_numbers(length)
+        
+def num_symbol(length):
+      try:
+            characters.get_symbols = abs(int(input("Enter the minimum number of symbols. (Enter '0' to skip): ")))
+            assert (length - characters.get_symbols) >= 0
+            assert (length != characters.get_length)
+      except:
+        if (length - characters.get_symbols) < 0:
+            print("\nThere's not enough password space remaining for this number of symbols!\n")  
+        elif (length == characters.get_length):
+            print("\nYou didn't specify what characters to be generated for your password! Returning to the password option menu...\n")
+            time.sleep(3)
+            os.system('clear')
+            return welcome(1) #change to menu
+        else:
+            print("\nInvalid Input Detected. Try Again.\n")  
+        return num_symbol(length)
+
+
+
+#  Pass the dictionary to the function will generate a password
+def passGen(passSpecs):
+            import random
+            characters.password_elements = []
+     
+            
+            # Fulfill the user required characters first 
+            for i in range (passSpecs['lower']):
+                if (passSpecs['lower']) > 0:
+                    characters.password_elements.append(random.choice(characters.lower_case_letters_list))
+                    characters.remaining_chars.extend(characters.lower_case_letters_list)
+                else:
+                    pass
+            for i in range (passSpecs['upper']):
+                if (passSpecs['upper']) > 0:
+                    characters.password_elements.append(random.choice(characters.upper_case_letters_list))
+                    characters.remaining_chars.extend(characters.upper_case_letters_list)
+                else:
+                    pass
+            for i in range (passSpecs['numbers']):
+                if (passSpecs['numbers']) > 0:
+                    characters.password_elements.append(random.choice(characters.numbers_list))
+                    characters.remaining_chars.extend(characters.numbers_list)
+                else:
+                    pass
+            for i in range (passSpecs['symbols']):
+                if (passSpecs['symbols']) > 0:
+                    characters.password_elements.append(random.choice(characters.symbols_list))
+                    characters.remaining_chars.extend(characters.symbols_list)
+                else:
+                    pass
+
+            # Full list of characters to fill in based on the user requirements if not over max
+            while len(characters.password_elements) < (passSpecs['length']):
+                    characters.password_elements.append(random.choice(characters.remaining_chars))          
+                
+            random.shuffle(characters.password_elements)
+            password = "".join(characters.password_elements)
+            
+  
+            return password
+    
+
+# Generate the password
+
 #Connecting to a database and preparing queries
 database = sqlite3.connect("pw_manager.db")
 cursor = database.cursor()
@@ -205,8 +372,14 @@ def updatePassword():
           os.system('clear')
           return welcome(choice)
         elif choice == 2:
-          # You can insert return password generator function here
-          return print("This is where the function to generate password will be")
+          new_password = passGen(generate_user_input()) 
+          print(f"NEW PASSWORD: {new_password}")
+          cursor.execute(f'''UPDATE login SET password = "{new_password}" WHERE log_id = "{info.log_id}";''')
+          database.commit()
+          time.sleep(3)
+          os.system('clear')
+          return welcome(choice)
+       
         else:
           os.system('clear')
           return welcome(choice)

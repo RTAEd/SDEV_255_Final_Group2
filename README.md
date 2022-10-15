@@ -24,6 +24,8 @@ Username: kprice
 Password: 7docuPRIME/.@
 
 You can also make new user for the app.
-This code works on VS code for Windows Operating System.
 
-If you are working with PythonAnywhere, please refer to the alt version.
+[Update: finalized_project.py]
+This code works for all operating system with the new clearscreen function that detects the os.
+
+
