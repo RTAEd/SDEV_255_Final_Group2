@@ -403,11 +403,8 @@ for frame in (frame1,frame2):
     
 #Load opening sequence
 opening()
-#open up the first frame
+#load up the first frame
 load_frame1()
-
-
-
 
 # run app
 root.mainloop()
