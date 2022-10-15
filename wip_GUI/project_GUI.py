@@ -397,10 +397,13 @@ frame1 = tk.Frame(root, width=640, height=600, bg="#002435")
 frame2 = tk.Frame(root, bg="#002435")
 #frame3 = tk.Frame(root, bg="black")
 
-
+#Allow the window to resize if the website list is too long
 for frame in (frame1,frame2):
     frame.grid(row=0, column=0, sticky = "nesw")
+    
+#Load opening sequence
 opening()
+#open up the first frame
 load_frame1()
 
 
