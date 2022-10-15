@@ -1,4 +1,4 @@
-You can download SecretKeyShield.EXE here.
+# You can download SecretKeyShield.EXE here.
 This app runs on Windows 7 OS and above. If you are using another operating system, I cannot gaurantee it will run.
 
 1. You can download the app by itself.
