@@ -10,21 +10,21 @@ Secret Key Shield is a password management application. It requires you to login
 
 The app allows you to:
 
-- Create a new User
+- Create a new User:
   Upon entering the app, there is a button that allows the user to make an SKS account. You can make one for yourself. Be sure to remember it!
   
-- Login
+- Login:
   One computer can have many users. This app can store username/password information of multiple people, so be sure to login to the right account. Press the 'Enter'     key to submit your entry. You only get three attempts to login. Fail to login and the app will close on you. 
   
 Once you sucessfully login, you will be directed to the Welcome Screen. Here you have the option to either:
 
-- View Information
+- View Information:
   This button allows you to see all the websites you have inserted into your SKS account. Click on the website to view its login information. You will have an option     to update your password here.
   
-- Add Information
+- Add Information:
   This button allows you to enter your username and password for the website you choose. Remember, NO BLANKS ALLOW!
   
- Updating your Passwords
+ Updating your Passwords:
  It's good to update your password every now and then, and the app allows you to do so.
  
  - Enter New Password:
