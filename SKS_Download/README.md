@@ -3,7 +3,7 @@ This app runs on Windows 7 OS and above. If you are using another operating syst
 
 1. You can download the app by itself.
 2. Browse a place to place the app.
-3. Your computer may stop you from running the program, but you can choose the 'run anyway' option to execute the program. It is safe. You can see the code for this app in the wip_GUI folder.
+3. Your computer may stop you from running the program, but you can choose the 'run anyway' or 'run as administer' option to execute the program. It is safe. You can see the code for this app in the wip_GUI folder.
 
 
 Secret Key Shield is a password management application. It requires you to login in order to store your username and passwords.
