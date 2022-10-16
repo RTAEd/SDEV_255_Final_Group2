@@ -1,5 +1,3 @@
-Installation Versions:
-
 Pillow==9.2.0
 pyglet==1.5.27
 tk==0.1.0
