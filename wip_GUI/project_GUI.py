@@ -316,9 +316,13 @@ def addInfo():
     password = tk.Entry(frame2,width=50)
     password.pack()
     password.bind("<Return>", (lambda event: add(info.log_id,info.web_id,websitename.get(),url.get(),email.get(),username.get(),password.get())))
+    
+    # Button to generate password XXXXX
+    tk.Button(frame2, text="Generate Password", font = ("Parisienne Small", 20), bg="#28393a", fg="white", cursor = "hand2", activebackground = "#badee2", activeforeground = "black", command = lambda:[password.delete(0, END),password.insert(0, generate_password())]).pack(pady=20)
 
     #button to go back
-    tk.Button(frame2, text="Cancel", font = ("undefeated", 10), bg="#28393a", fg="white", cursor = "hand2", activebackground = "#badee2", activeforeground = "black", command = lambda:load_frame2()).pack(pady=20)
+    tk.Button(frame2, text="Cancel", font = ("undefeated", 10), bg="#28393a", fg="white", cursor = "hand2", activebackground = "#badee2", activeforeground = "black", command = lambda:load_frame2()).pack(pady=1)
+    
 
 
 #Checks for empty inputs and updates the new website and its login informations
